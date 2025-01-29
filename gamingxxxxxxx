@@ -1,0 +1,172 @@
+const startBtn = document.getElementById("startBtn");
+const quizSection = document.getElementById("quizSection");
+const questionContainer = document.getElementById("questionContainer");
+const optionsContainer = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const scoreDisplay = document.getElementById("score");
+const endMessage = document.getElementById("endMessage");
+const finalScoreDisplay = document.getElementById("finalScore");
+const restartBtn = document.getElementById("restartBtn");
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+const questions = [
+  {
+    question: "Which of the following code is more easy to learn?",
+    options: ["C", "HTML", "Python", "JAVA"],
+    correctAnswer: 2
+  },
+  {
+    question: "Who is the Richest person in the world?",
+    options: ["Gautam Adani", "Elon Musk", "Mark Zuckerberg", "Cristiano Ronaldo"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which month is coldest in India?",
+    options: ["May", "December", "April", "January"],
+    correctAnswer: 3
+  },
+  {
+    question: "Which of the following is related to Kapil Sharma?",
+    options: ["Philosopher", "Leader", "Singer", "Comedian"],
+    correctAnswer: 3
+  },
+  {
+    question: "Which of the following is related to CODE WITH HARRY?",
+    options: ["Actor", "Coder", "Businessman", "Magician"],
+    correctAnswer: 1
+  }
+];
+
+startBtn.addEventListener("click", startGame);
+nextBtn.addEventListener("click", nextQuestion);
+restartBtn.addEventListener("click", restartGame);
+
+function startGame() {
+  startBtn.classList.add("hidden");
+  quizSection.classList.remove("hidden");
+  showQuestion();
+}
+
+function showQuestion() {
+  const currentQuestion = questions[currentQuestionIndex];
+  questionContainer.querySelector("p").textContent = currentQuestion.question;
+  optionsContainer.innerHTML = "";
+  currentQuestion.options.forEach((option, index) => {
+    const optionBtn = document.createElement("button");
+    optionBtn.textContent = option;
+    optionBtn.onclick = () => checkAnswer(index);
+    optionsContainer.appendChild(optionBtn);
+  });
+  nextBtn.classList.add("hidden");
+}
+
+function checkAnswer(selectedAnswer) {
+  const currentQuestion = questions[currentQuestionIndex];
+  if (selectedAnswer === currentQuestion.correctAnswer) {
+    score += 5;
+    alert("Congratulations, you won 5 points.");
+  } else {
+    alert("Wrong answer! Correct answer: " + currentQuestion.options[currentQuestion.correctAnswer]);
+  }
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    nextBtn.classList.remove("hidden");
+  } else {
+    endGame();
+  }
+}
+
+function nextQuestion() {
+  showQuestion();
+  nextBtn.classList.add("hidden");
+}
+
+function endGame() {
+  quizSection.classList.add("hidden");
+  finalScoreDisplay.textContent = score;
+  endMessage.classList.remove("hidden");
+}
+
+function restartGame() {
+  score = 0;
+  currentQuestionIndex = 0;
+  endMessage.classList.add("hidden");
+  startBtn.classList.remove("hidden");
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.hidden {
+  display: none;
+}
+
+#questionContainer {
+  margin-top: 20px;
+}
+
+#options {
+  margin-top: 10px;
+}
+
+#score {
+  font-size: 18px;
+  margin-top: 20px;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the Quiz Game</h1>
+    <p>Click "Start" to begin</p>
+    <button id="startBtn">Start Game</button>
+    <div id="quizSection" class="hidden">
+      <div id="questionContainer">
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="nextBtn">Next Question</button>
+      </div>
+      <p id="score"></p>
+    </div>
+    <div id="endMessage" class="hidden">
+      <h2>Your Final Score: <span id="finalScore"></span></h2>
+      <button id="restartBtn">Restart</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
